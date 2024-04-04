@@ -13,14 +13,14 @@ const bookBtn = document.querySelector('#book-tour');
 
 // NOTE Values
 
-if (loginForm)
+if (loginForm) {
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     await login(email, password);
   });
-
+}
 if (logOutBtn) logOutBtn.addEventListener('click', logout);
 
 if (userDataForm)
