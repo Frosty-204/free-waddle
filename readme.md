@@ -12,13 +12,10 @@ Live demo 👉 : [click here](https://free-waddle.onrender.com)
 4. Proceed to the payment checkout page
 5. Enter the card details (Test Mood):
    - Card No. : 4242 4242 4242 4242
-   - Expiry date: 02 / 22
+   - Expiry date: 02 / 25
    - CVV: 222
 6. Finished!
-7. Manage your booking
-8. Check the tour you have booked in the "Manage Booking" page in your user settings. You'll be automatically redirected to this page after you have completed the booking.
-9. Update your profile
-10. You can update your own username, profile photo, email, and password.
+7. You can update your own username, profile photo, email, and password.
 
 ### API Usage
 
