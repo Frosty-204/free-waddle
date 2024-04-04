@@ -7,7 +7,8 @@
     "main": false
   },
   "scripts": {
-    "start": "supervisor server.js",
+    "start": "node server.js",
+    "dev": "supervisor server.js",
     "start:prod": "NODE_ENV=production supervisor server.js",
     "watch:js": "esbuild --watch --sourcemap --bundle ./public/js/index.js --outfile=./public/js/bundle.js",
     "build:js": "esbuild --bundle --sourcemap ./public/js/index.js --outfile=./public/js/bundle.js"
