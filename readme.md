@@ -2,7 +2,7 @@
 
 ## Deployed Version
 
-Live demo 👉 :[click here](https://free-waddle.onrender.com)
+Live demo 👉 : [click here](https://free-waddle.onrender.com)
 
 ## How To Use
 
