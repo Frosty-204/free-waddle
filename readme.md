@@ -2,7 +2,7 @@
 
 ## Deployed Version
 
-Live demo (Feel free to visit) 👉 :[unavailable](https://natours-ijrr.onrender.com/)
+Live demo 👉 :[click here](https://free-waddle.onrender.com)
 
 ## How To Use
 
