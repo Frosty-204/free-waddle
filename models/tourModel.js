@@ -188,11 +188,11 @@ tourSchema.pre(/^find/, function (next) {
   next();
 });
 
-tourSchema.post(/^find/, function (doc, next) {
-  console.log(`Query took ${Date.now() - this.start} milleseconds!`);
+// tourSchema.post(/^find/, function (doc, next) {
+//   console.log(`Query took ${Date.now() - this.start} milleseconds!`);
 
-  next();
-});
+//   next();
+// });
 
 // LEC Aggregation middleware
 // tourSchema.pre('aggregate', function (next) {

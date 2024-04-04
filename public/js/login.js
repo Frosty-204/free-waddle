@@ -3,19 +3,19 @@ import axios from 'axios';
 import { showAlert } from './alert';
 
 export const login = async (email, password) => {
-  console.log('test');
+  // console.log('test');
 
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://127.0.0.1:3000/api/v1/users/login',
+      url: '/api/v1/users/login',
       data: {
         email,
         password,
       },
     });
 
-    console.log(res);
+    // console.log(res);
 
     if (res.data.status === 'success') {
       showAlert('success', 'Logged in successfully');
@@ -32,7 +32,7 @@ export const logout = async () => {
   try {
     const res = await axios({
       method: 'GET',
-      url: 'http://127.0.0.1:3000/api/v1/users/logout',
+      url: '/api/v1/users/logout',
     });
 
     // Reload the server instead of cache

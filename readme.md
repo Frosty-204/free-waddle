@@ -1,6 +1,6 @@
 # Natours
 
-### Deployed Version
+## Deployed Version
 
 Live demo (Feel free to visit) 👉 :[unavailable](https://natours-ijrr.onrender.com/)
 
@@ -24,6 +24,6 @@ Live demo (Feel free to visit) 👉 :[unavailable](https://natours-ijrr.onrender
 
 Before using the API, you need to set the variables in Postman depending on your environment (development or production). Simply add:
 
-- `{{URL}}` with your hostname as the value (Eg. http://127.0.0.1:3000 or http://www.example.com)
+- `{{URL}}` with your hostname as the value (Eg. <http://127.0.0.1:3000> or <http://www.example.com>)
 - `{{password}}` with your user password as the value.
   Check Natours API Documentation for more info:

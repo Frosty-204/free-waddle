@@ -121,7 +121,6 @@ block content
      for(let location of data){
          latling.push([location.coordinates[1],location.coordinates[0]]);
      }
-     console.log(latling);
      const polyline = L.polyline(latling);
      polyline.addTo(map);
       }
