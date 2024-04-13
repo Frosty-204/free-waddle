@@ -10,7 +10,7 @@ Live demo 👉 : [click here](https://free-waddle.onrender.com)
 2. Login to the site
 3. Search for tours that you want to book
 4. Proceed to the payment checkout page
-5. Enter the card details (Test Mood):
+5. Enter the card details (Test Mode):
    - Card No. : 4242 4242 4242 4242
    - Expiry date: 02 / 25
    - CVV: 222
