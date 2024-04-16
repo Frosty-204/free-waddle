@@ -14,13 +14,9 @@ const app = express();
 const cors = require('cors');
 
 app.enable('trust proxy');
-app.set('view engine' , 'pug');
-app.set('views' , path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
-
-
-
-
 
 // 1) MIDDLEWARES
 
@@ -33,7 +29,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.options('*' , cors());
 
 const corsOptions = {
-  origin: ['https://natours-ijrr.onrender.com', 'https://www.example.com', 'https://www.anotherdomain.com'],
+  origin: [
+    'https://free-waddle.onrender.com',
+    'https://www.example.com',
+    'https://www.anotherdomain.com'
+  ]
 };
 
 app.use(cors(corsOptions));
@@ -53,13 +53,10 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP , please try again in an hour!'
 });
 
-
-
 app.use('/api', limiter);
-app.use(express.json({ limit  : '10kb' }));
+app.use(express.json({ limit: '10kb' }));
 
-
-app.use(express.urlencoded({extended : true , limit: '10kb'}));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
 // Serving static files
@@ -69,22 +66,21 @@ app.use(express.json());
 // Data sanitization against noSql query injection
 app.use(mongoSanitize()); // remove all $
 
-
 // Data sanitization against xss
 app.use(xss());
 // using last parameter sort=duration&sort=price will sort by price
-app.use(hpp({
-    whitelist:
-      ['duration',
-      'ratingQuantity'
-      , 'ratingsAverage'
-      , 'maxGroupSize'
-      , 'difficulty'
-      , 'price'
-      ]
-  }
-));
-
+app.use(
+  hpp({
+    whitelist: [
+      'duration',
+      'ratingQuantity',
+      'ratingsAverage',
+      'maxGroupSize',
+      'difficulty',
+      'price'
+    ]
+  })
+);
 
 app.use(compression());
 // Test middleware
@@ -100,25 +96,18 @@ const userRouter = require('./routes/userRoutes');
 const reviewsRouter = require('./routes/reviewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 
-
-
 app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
-app.use('/api/v1/reviews' , reviewsRouter);
-app.use('/api/v1/bookings' , bookingRouter);
-
+app.use('/api/v1/reviews', reviewsRouter);
+app.use('/api/v1/bookings', bookingRouter);
 
 // Handling unhandled routes
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server !`));
 });
 
-
 // Error Handling middleware
 app.use(globalErrorHandler);
 // 4) Start Server
 module.exports = app;
-
-
-

@@ -1,9 +1,9 @@
 import '@babel/polyfill';
 import { login, logout } from './login';
 import { forgotPassword } from './forgotPassword';
-import {resetPassword} from './resetPassword';
+import { resetPassword } from './resetPassword';
 import { signUp } from './signUp';
-import { displayMap } from './mapbox';
+// import { displayMap } from './mapbox';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
 
@@ -12,14 +12,11 @@ import {
   disable as disableDarkMode,
   auto as followSystemColorScheme,
   exportGeneratedCSS as collectCSS,
-  isEnabled as isDarkReaderEnabled,
+  isEnabled as isDarkReaderEnabled
 } from 'darkreader';
 
-
-
-
 // DOM ELEMENTS
-const mapBox = document.getElementById('map');
+// const mapBox = document.getElementById('map');
 
 const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
@@ -29,12 +26,9 @@ const signupForm = document.querySelector('.form--signup');
 const resetPasswordForm = document.querySelector('.form--resetPassword');
 const forgotPasswordForm = document.querySelector('.form--forgotPassword');
 
-
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 const bookBtn = document.getElementById('book-tour');
-
-
 
 const darkModeButton = document.getElementById('dark-mode-button');
 
@@ -45,7 +39,7 @@ if (userPreference === 'enabled') {
   enableDarkMode({
     brightness: 100,
     contrast: 90,
-    sepia: 10,
+    sepia: 10
   });
   darkModeButton.classList.add('active');
 }
@@ -62,7 +56,7 @@ function toggleDarkMode() {
     enableDarkMode({
       brightness: 100,
       contrast: 90,
-      sepia: 10,
+      sepia: 10
     });
     darkModeButton.classList.add('active');
     // Save user preference to localStorage
@@ -70,14 +64,12 @@ function toggleDarkMode() {
   }
 }
 
-
-if (mapBox) {
-  const locations = JSON.parse(mapBox.dataset.locations);
-  displayMap(locations);
-}
+// if (mapBox) {
+//   const locations = JSON.parse(mapBox.dataset.locations);
+//   displayMap(locations);
+// }
 
 if (signupForm) {
-
   signupForm.addEventListener('submit', async e => {
     e.preventDefault();
 
@@ -92,20 +84,16 @@ if (signupForm) {
     document.querySelector('.btn--green').textContent = 'Signup';
   });
 }
-if (forgotPasswordForm){
-
+if (forgotPasswordForm) {
   forgotPasswordForm.addEventListener('submit', async e => {
-
     e.preventDefault();
     const email = document.getElementById('email').value;
     await forgotPassword(email);
-
   });
 }
 
-
 if (resetPasswordForm) {
-  resetPasswordForm.addEventListener('submit', async (e) => {
+  resetPasswordForm.addEventListener('submit', async e => {
     e.preventDefault();
     const password = document.getElementById('password').value;
     const password_confirm = document.getElementById('password-confirm').value;
@@ -121,7 +109,6 @@ if (resetPasswordForm) {
   });
 }
 
-
 if (loginForm) {
   loginForm.addEventListener('submit', async e => {
     e.preventDefault();
@@ -131,16 +118,13 @@ if (loginForm) {
   });
 }
 
-
 if (logOutBtn) {
   logOutBtn.addEventListener('click', logout);
 }
 
-
 if (userDataForm) {
   userDataForm.addEventListener('submit', e => {
     e.preventDefault();
-
 
     const form = new FormData();
     form.append('name', document.getElementById('name').value);
@@ -155,7 +139,6 @@ if (userDataForm) {
   });
 }
 
-
 if (userPasswordForm) {
   userPasswordForm.addEventListener('submit', async e => {
     e.preventDefault();
@@ -164,9 +147,11 @@ if (userPasswordForm) {
     const password = document.getElementById('password').value;
     const passwordConfirm = document.getElementById('password-confirm').value;
 
-    await updateSettings({ passwordCurrent, password, passwordConfirm }, 'password');
+    await updateSettings(
+      { passwordCurrent, password, passwordConfirm },
+      'password'
+    );
     document.querySelector('.btn--save-password').textContent = 'Save password';
-
   });
 }
 
@@ -176,6 +161,5 @@ if (bookBtn) {
     e.target.textContent = 'Processing...';
     const { tourId } = e.target.dataset;
     bookTour(tourId);
-
   });
 }
