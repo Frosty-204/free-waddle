@@ -78,8 +78,8 @@ if (signupForm) {
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const password_confirm = document.getElementById('password-confirm').value;
-    await signUp(name, email, password, password_confirm);
+    const passwordConfirm = document.getElementById('password-confirm').value;
+    await signUp(name, email, password, passwordConfirm);
 
     document.querySelector('.btn--green').textContent = 'Signup';
   });
