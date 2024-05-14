@@ -39,7 +39,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   const username = req.body.name;
 
   if (!username || !usernameRegex.test(username)) {
-    return next(new AppError('Invalid username. Username must be 3-20 characters long and can only contain letters, numbers, periods, underscores, and hyphens.', 400)
+    return next(new AppError('Invalid username. Username must be 3-20 characters long and can only contain letters, numbers, periods, underscores, and hyphens.', 400))
   }
   
   const newUser = await User.create({
