@@ -34,6 +34,14 @@ const signToken = id => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
+
+  const usernameRegex =  /^[a-zA-Z][\w -]{2,19}$/; // Adjust length limits if needed
+  const username = req.body.name;
+
+  if (!username || !usernameRegex.test(username)) {
+    return next(new AppError('Invalid username. Username must be 3-20 characters long and can only contain letters, numbers, periods, underscores, and hyphens.', 400)
+  }
+  
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
