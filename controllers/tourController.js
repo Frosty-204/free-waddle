@@ -44,7 +44,7 @@ exports.resizeTourImages = async (req, res, next) => {
   await sharp(req.files.imageCover[0].buffer)
     .resize(2000, 1333)
     .toFormat('jpeg')
-    .jpeg({ quality: 90 })
+    .jpeg({ quality: 90, force: true })
     .toFile(`public/img/tours/${req.body.imageCover}`);
   //req.body.imageCover = imageCoverFilename;
   req.body.images = [];
@@ -57,7 +57,7 @@ exports.resizeTourImages = async (req, res, next) => {
       await sharp(file.buffer)
         .resize(2000, 1333)
         .toFormat('jpeg')
-        .jpeg({ quality: 90 })
+        .jpeg({ quality: 90, force: true })
         .toFile(`public/img/tours/${filename}`);
 
       req.body.images.push(filename);
