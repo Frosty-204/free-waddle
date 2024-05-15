@@ -17,7 +17,7 @@ export const login = async (email, password) => {
      if (res.data.status === 'success'){
        showAlert('success', 'Logged in successfully');
        window.setTimeout(() =>{
-         location.assign('/')
+         location.reload(true)
        }, 500);
      }
     console.log(res);
