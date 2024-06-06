@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,700" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
+
+  <title>Natours | Manage Tours</title>
+</head>
+
+<body>
+  <header class="header">
+    <nav class="nav nav--tours">
+      <a href="#" class="nav__el">All tours</a>
+      <form class="nav__search">
+        <button class="nav__search-btn">
+          <svg>
+            <use xlink:href="img/icons.svg#icon-search"></use>
+          </svg>
+        </button>
+        <input type="text" placeholder="Search tours" class="nav__search-input" />
+      </form>
+    </nav>
+    <div class="header__logo">
+      <img src="img/logo-white.png" alt="Natours logo" />
+    </div>
+    <nav class="nav nav--user">
+      <a href="#" class="nav__el">My bookings</a>
+      <a href="#" class="nav__el">
+        <img src="img/user.jpg" alt="User photo" class="nav__user-img" />
+        <span>Jonas</span>
+      </a>
+
+      <!-- <button class="nav__el">Log in</button>
+        <button class="nav__el nav__el--cta">Sign up</button> -->
+    </nav>
+  </header>
+
+  <!-- In video, this <main> element is wrongly called: <section class="overview">. So in pug template, please use main.main instead of section.overview -->
+  <main class="main">
+    <div class="card-container">
+
+    </div>
+  </main>
+
+  <div class="footer">
+    <div class="footer__logo">
+      <img src="img/logo-green.png" alt="Natours logo" />
+    </div>
+    <ul class="footer__nav">
+      <li><a href="#">About us</a></li>
+      <li><a href="#">Download apps</a></li>
+      <li><a href="#">Become a guide</a></li>
+      <li><a href="#">Careers</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <p class="footer__copyright">
+      &copy; by Jonas Schmedtmann. All rights reserved.
+    </p>
+  </div>
+</body>
+
+
+</html>
+
+
+
+
+
+
+
+<!-- Modal trigger button -->
+
+
+<!-- Modal Body -->
+<!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+<!-- <div class="modal fade" id="add-tour-modal" tabindex="-1"  role="dialog"
+  aria-labelledby="modalTitleId" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
+    <div class="modal-content">
+      <form action="">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitleId">
+            Modal title
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary">Save</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div> -->
+
+<!-- Optional: Place to the bottom of scripts -->
+>

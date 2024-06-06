@@ -1,0 +1,191 @@
+extends base
+
+block content 
+
+  main.main 
+    .container
+      .row.mb-2
+        .col-12 
+          h3.fw-bold Tours Management Page
+
+      .row.mb-3
+        .col-8 
+        .col-4.d-flex.flex-row-reverse  
+          button(id='add-tour-btn').btn.btn-success.me-3.w-100
+            i.bi.bi-plus
+
+
+      .row  
+        .col
+          div.table-responsive
+            table.table.table-success
+              thead
+                tr
+                  th(scope='col') # 
+                  th(scope='col') Name 
+                  th(scope='col') Link name  (Slug) 
+                  th(scope='col') Duration (Days)
+                  th(scope='col') Price per Person
+                  th(scope='col') Difficulty
+                  th(scope='col') Participants (maxGroupSize)
+                  th(scope='col') Summary
+                  th(scope='col') Description
+                  th(scope='col') Ratings Quantity
+                  th(scope='col') Ratings Average
+                  th(scope='col') imageCover
+                  th(scope='col') Created At
+                  th(scope='col') Actions
+
+
+              tbody
+                each tour,index in tours
+                  tr.align-middle
+                    td(scope="row")= index +1
+                    td(scope="row")= tour.name
+                    td= tour.slug
+                    td= tour.duration
+                    td= tour.price
+                    td= tour.difficulty
+                    td= tour.maxGroupSize
+                    td= tour.summary
+                    td= tour.description
+                    td= tour.ratingsQuantity
+                    td= tour.ratingsAverage
+                    td
+                      img(src=`/img/tours/${tour.imageCover}`).img-thumbnail
+                    td= tour.createdAt.toLocaleString('en-us')
+
+                    td
+                      div(style="gap:10px").d-flex.justify-content-center
+                        a(id='location-btn' ,role="button").btn.btn-success locations
+                        a(role="button").btn.btn-success Guides
+                        a(role="button").btn.btn-info Edit
+                        a(role="button").btn.btn-danger 
+                          i.bi.bi-trash
+
+
+      nav(aria-label="Page navigation")
+      
+        - var page = 1;   
+        ul.pagination.pagination-lg.justify-content-center
+          if current_url_query.page == 1
+            li.page-item.disabled
+              a.page-link(href='/manage-tours?page='+(current_url_query.page -1))
+                span(aria-hidden="true") &laquo;
+          else 
+            li.page-item
+              a.page-link(href='/manage-tours?page='+(current_url_query.page -1))
+                span(aria-hidden="true") &laquo;
+           
+          while page <= total_pages
+            if current_url_query.page == page
+             li.page-item.active(aria-current="page") 
+                a.page-link(href='/manage-tours?page='+(page ))= (page++)
+            else 
+              li.page-item(aria-current="page") 
+                a.page-link(href='/manage-tours?page='+(page ))= (page++)
+
+          if parseInt(current_url_query.page) == total_pages    
+            li.page-item.disabled
+              a.page-link(href='/manage-tours?page='+(parseInt(current_url_query.page) +1))
+                span(aria-hidden="true") &raquo;
+          else 
+            li.page-item
+              a.page-link(href='/manage-tours?page='+(parseInt(current_url_query.page) +1))
+                span(aria-hidden="true") &raquo;
+
+
+
+    div.modal.fade(id="add-tour-modal", tabindex="-1",  role="dialog", aria-labelledby="modalTitleId", aria-hidden="true")
+      div.modal-dialog.modal-dialog-scrollable.modal-dialog-centered.modal-md(role="document")
+        div.modal-content
+            div.modal-header
+              h5.modal-title(id="modalTitleId") Modal title
+              button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
+            div.modal-body
+              form(action="",id='add-tour-form').w-100 
+                .form__group
+                  label.form__label(for='name') Name
+                  input#name_manage_tours.form__input(type='text', value=``, required)
+                .form__group.ma-bt-md
+                  label.form__label(for='email') Link Name
+                  input#link_name_manage_tours.form__input(type='text', value=``, required)
+                .form__group.ma-bt-md
+                  label.form__label Duration (Days)
+                  input#duration_manage_tours.form__input(type='number', value=``,required)
+                .form__group.ma-bt-md
+                  label.form__label Price per person
+                  input#price_manage_tours.form__input(type='number', value=``,required)
+                .form__group.ma-bt-md
+                  label.form__label(for='role') Difficulty
+                  select#difficulty_manage_tours.form-select.form-select-lg( value=``, required)
+                    each role in ['easy','medium','difficult']
+                      option(value=role)= role
+                .form__group.ma-bt-md
+                  label.form__label(for='role') Guides
+                  //- select#guides_manage_tours.form-select.form-select-lg(multiple, value=``, required)
+                  //-   each guide in guides
+                  //-     option(value=guide._id)= guide.name
+                each guide,index in guides
+                  .form-check
+                      input.form-check-input(type="checkbox",id=`guides_checkbox`,value=guide.id)
+                      label.form-check-label= guide.name
+                .form__group.ma-bt-md
+                  label.form__label Participants
+                  input#participants_manage_tours.form__input(type='number', value=``,required)
+                .form__group.ma-bt-sm
+                  label.form__label Summary
+                  textarea#summary_manage_tours.form__input(, value=``,required)
+                .form__group.ma-bt-sm
+                  label.form__label Description
+                  textarea#description_manage_tours.form__input( value=``,required)
+                .form-group.mb-4
+                  label.form-label Cover image
+                  input(type="file",accept='image/*',required)#image_cover_manage_tours.form-control
+                
+                button.d-block.mx-auto.btn.btn-primary(type="submit") Save
+
+            div.modal-footer
+              button.btn.btn-secondary(data-bs-dismiss="modal") Close
+
+
+    div.modal.fade(id="location-modal", tabindex="-1",  role="dialog", aria-labelledby="modalTitleId", aria-hidden="true")
+      div.modal-dialog.modal-dialog-scrollable.modal-dialog-centered.modal-lg(role="document")
+        div.modal-content
+          form(action="")
+            div.modal-header
+              h5.modal-title(id="modalTitleId") Modal title
+              button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
+            div.modal-body
+              div.container
+                section.section-map
+                  #map(data-locations=`${JSON.stringify(tours[3].locations)}`)
+
+            div.modal-footer
+              button.btn.btn-secondary.tour-modal-close(type="submit", data-bs-dismiss="modal") Close
+         
+
+
+  script.
+
+      const leaf = document.getElementById('map');
+      if(leaf){
+     const data = JSON.parse(document.getElementById('map').dataset.locations);
+     //for(let location in )
+     const map = L.map('map').setView([data[0].coordinates[1],data[0].coordinates[0]],7);
+     const titleUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+     const attribution ='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+     const title = L.tileLayer(titleUrl,{attribution});
+     title.addTo(map);
+     for(let location of data){
+         const CLayer = L.marker([location.coordinates[1],location.coordinates[0]],{radius:10000,color:'coral',fillColor:'blue',fillOpacity:0.5});
+         CLayer.bindPopup('<h2>'+location.description+','+location.day +' days </h2>');
+         CLayer.addTo(map);
+     } 
+     const latling = [];
+     for(let location of data){
+         latling.push([location.coordinates[1],location.coordinates[0]]);
+     }
+     const polyline = L.polyline(latling);
+     polyline.addTo(map);
+      }
