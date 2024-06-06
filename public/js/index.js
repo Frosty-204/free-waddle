@@ -2,6 +2,7 @@
 import '@babel/polyfill';
 import { Modal } from 'bootstrap'
 import { login, logout } from './login';
+import { signUp } from './signUp';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
 import "bootstrap";
@@ -16,6 +17,7 @@ const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
 const bookBtn = document.querySelector('#book-tour');
+const signupForm = document.querySelector('.form--signup');
 
 
 
@@ -34,6 +36,23 @@ if (loginForm) {
     await login(email, password);
   });
 }
+
+if (signupForm) {
+  signupForm.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    document.querySelector('.btn--green').textContent = 'Loading...';
+
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('password-confirm').value;
+    await signUp(name, email, password, passwordConfirm);
+
+    document.querySelector('.btn--green').textContent = 'Signup';
+  });
+}
+
 if (logOutBtn) logOutBtn.addEventListener('click', logout);
 
 if (userDataForm)
