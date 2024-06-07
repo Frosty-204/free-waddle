@@ -1,0 +1,159 @@
+extends base
+
+block content 
+  link(rel='stylesheet' href='/css/bundle.css')
+
+  style(type="text/css").
+    html {
+     font-size: 16px;
+    }
+
+  main.main 
+    .container
+      .row.mb-3
+        .col-4
+          form(id='search-manage-users').input-group.mb-2
+            button.btn.btn-outline-secondary(type='submit')
+              i.bi.bi-search
+            input(id='search-name-manage-users' ,type="text",placeholder="Name",aria-label="Button").form-control
+        .col-4.d-flex.flex-row-reverse(style="margin-left : auto")  
+          button(id='add-user-btn',data-bs-toggle="modal", data-bs-target="#userModal").btn.btn-success.me-3.w-100
+            i.bi.bi-plus
+
+      
+
+      .row  
+        .col
+          div#user-table.table-responsive
+            table.table.table-success
+              thead
+                tr
+                  th(scope='col') # 
+                  th(scope='col') Name 
+                  th(scope='col') Email 
+                  th(scope='col') Role 
+                  th(scope='col') Active
+                  th(scope='col') Photo
+                  
+                  th(scope='col') Actions
+
+
+              tbody
+                each user,index in users
+                  tr.align-middle
+                    td(scope="row")= index +1
+                    td.d-none(id=`id-${index}`,scope="row")= user.id
+                    td(id=`name-${index}`,scope="row")= user.name
+                    td(id=`email-${index}`,scope="row")= user.email
+                    td(id=`role-${index}`,scope="row")= user.role
+                    td(id=`active-${index}`)= user.active
+                    td
+                      img(src=`/img/users/${user.photo}`,style="width: 140px").img-thumbnail
+                    td
+                      div(style="gap:10px").d-flex.justify-content-center
+                        a#edit-user-btn(role="button").btn.btn-info Edit
+                        a#delete-btn(role="button").btn.btn-danger 
+                          i.bi.bi-trash
+
+      
+
+
+      nav(aria-label="Page navigation")
+      
+        - var page = 1;   
+        ul.pagination.pagination-lg.justify-content-center
+          if current_url_query.page == 1
+            li.page-item.disabled
+              a.page-link(href='/manage-users?page='+(current_url_query.page -1))
+                span(aria-hidden="true") &laquo;
+          else 
+            li.page-item
+              a.page-link(href='/manage-users?page='+(current_url_query.page -1))
+                span(aria-hidden="true") &laquo;
+           
+          while page <= total_pages
+            if current_url_query.page == page
+             li.page-item.active(aria-current="page") 
+                a.page-link(href='/manage-users?page='+(page ))= (page++)
+            else 
+              li.page-item(aria-current="page") 
+                a.page-link(href='/manage-users?page='+(page ))= (page++)
+
+          if parseInt(current_url_query.page) == total_pages    
+            li.page-item.disabled
+              a.page-link(href='/manage-users?page='+(parseInt(current_url_query.page) +1))
+                span(aria-hidden="true") &raquo;
+          else 
+            li.page-item
+              a.page-link(href='/manage-users?page='+(parseInt(current_url_query.page) +1))
+                span(aria-hidden="true") &raquo;
+
+
+    div.modal.fade(id="editUserModal",  tabindex="-1",  role="dialog",  aria-hidden="true")
+      div.modal-dialog.modal-dialog-scrollable.modal-dialog-centered.modal-md(role="document")
+        div.modal-content
+          form(id="edit-user-form")
+            div.modal-header
+              h5.modal-title(id="modalTitleId") Edit User
+              button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
+            div.modal-body
+                
+                .form__group
+                  input#edit_id_manage_users(type='hidden',name='id')
+                  label.form__label(for='name') Name
+                  input#edit_name_manage_users.form__input(type='text', value=``, required, name='name')
+                .form__group.ma-bt-md
+                  label.form__label(for='email') Email address
+                  input#edit_email_manage_users.form__input(type='email', value=``, required, name='email')
+                .form__group.ma-bt-md
+                  label.form__label(for='password') Password
+                  input#edit_password_manage_users.form__input(type='password', value=``, name='password')
+                .form__group.ma-bt-md
+                  label.form__label(for='role') Role
+                  select#edit_role_manage_users.form-select( value=``, required, name='role')
+                    each role in ['admin','user','lead-guide','guide']
+                      option(value=role)= role
+                .form__group.form__photo-upload
+                  img.form__user-photo(src=`img/users/default.jpg`, alt='User photo')
+
+                  input(type='file', accept='image/*' id='edit_photo')
+                  label(for='photo') Choose photo
+
+            div.modal-footer
+              button.btn.btn-secondary(data-bs-dismiss="modal") Close
+              button.btn.btn-primary(type="submit") Save
+
+
+    div.modal.fade(id="userModal",  tabindex="-1",  role="dialog",  aria-hidden="true")
+      div.modal-dialog.modal-dialog-scrollable.modal-dialog-centered.modal-md(role="document")
+        div.modal-content
+          form(action="post",id="add-user-form")
+            div.modal-header
+              h5.modal-title(id="modalTitleId") Add User
+              button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
+            div.modal-body
+          
+                .form__group
+                  label.form__label(for='name') Name
+                  input#name_manage_users.form__input(type='text', value=``, required, name='name')
+                .form__group.ma-bt-md
+                  label.form__label(for='email') Email address
+                  input#email_manage_users.form__input(type='email', value=``, required, name='email')
+                .form__group.ma-bt-md
+                  label.form__label(for='password') Password
+                  input#password_manage_users.form__input(type='password', value=``, required, name='password')
+                .form__group.ma-bt-md
+                  label.form__label(for='role') Password
+                  select#role_manage_users.form-select( value=``, required, name='role')
+                    each role in ['admin','user','lead-guide','guide']
+                      option(value=role)= role
+                .form__group.form__photo-upload
+                  img.form__user-photo(src=`img/users/default.jpg`, alt='User photo')
+
+                  input.form__upload(type='file', accept='image/*' id='photo', name='photo')
+                  label(for='photo') Choose new photo
+
+            div.modal-footer
+              button.btn.btn-secondary( data-bs-dismiss="modal") Close
+              button.btn.btn-primary(type="submit",) Save
+

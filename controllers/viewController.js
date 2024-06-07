@@ -3,7 +3,7 @@ const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const User = require('../models/userModel');
 const Booking = require('../models/bookingModel');
-
+const Reviews = require('../models/reviewModel');
 
 exports.getOverview = catchAsync(async (req, res) => {
   // 1) Get tour data from collection
@@ -15,7 +15,6 @@ exports.getOverview = catchAsync(async (req, res) => {
     tours
   });
 });
-
 
 // Details page
 exports.getTour = catchAsync(async (req, res, next) => {
@@ -42,23 +41,23 @@ exports.getTour = catchAsync(async (req, res, next) => {
 
 // Signup page
 
-exports.getSignUp = (req , res) =>{
-   res.status(200).render('signup', {
-     title : 'Sign Up',
-   })
-}
+exports.getSignUp = (req, res) => {
+  res.status(200).render('signup', {
+    title: 'Sign Up'
+  });
+};
 
-exports.getResetPassword = (req , res) =>{
+exports.getResetPassword = (req, res) => {
   res.status(200).render('resetpassword', {
-    title : 'Reset Password',
-  })
-}
+    title: 'Reset Password'
+  });
+};
 
-exports.getForgotPassword = (req , res) =>{
+exports.getForgotPassword = (req, res) => {
   res.status(200).render('forgotpassword', {
-    title : 'Forget Password',
-  })
-}
+    title: 'Forget Password'
+  });
+};
 // Login page
 exports.getLoginForm = (req, res) => {
   res.status(200).render('login', {
@@ -78,16 +77,17 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
   const bookings = await Booking.find({ user: req.user.id });
   console.log(bookings);
   // 2) Find Tours with the returned ID'S
-  const tourIDs = bookings.map(el => {return el.tour});
+  const tourIDs = bookings.map(el => {
+    return el.tour;
+  });
   console.log(tourIDs);
   const tours = await Tour.find({ _id: { $in: tourIDs } });
 
-  res.status(200).render('overview' , {
-     title : 'My Tours',
-     tours,
+  res.status(200).render('overview', {
+    title: 'My Tours',
+    tours
   });
 });
-
 
 exports.updateUserData = catchAsync(async (req, res, next) => {
   // const updatedUser = await User.findByIdAndUpdate(req.user.id, {
@@ -103,5 +103,131 @@ exports.updateUserData = catchAsync(async (req, res, next) => {
     title: 'Your account',
     user: req.user
   });
+});
 
+exports.getAdminDashboardTours = catchAsync(async (req, res, next) => {
+  // Define the limit and page number for pagination
+  const limit = req.query.limit ? req.query.limit : 20;
+  const page = req.query.page ? req.query.page : 1;
+  const name = req.query.search ? req.query.search : ' ';
+  // Calculate the offset based on the page number and limit
+  const offset = (parseInt(page) - 1) * parseInt(limit);
+
+  // Find all bookings
+  const tours = await Tour.find({
+    name: { $regex: new RegExp(`${name}`, 'i') }
+  })
+    .skip(offset)
+    .limit(parseInt(limit));
+  const guides = await User.find({
+    $or: [{ role: 'guide' }, { role: 'lead-guide' }]
+  })
+    .skip(offset)
+    .limit(parseInt(limit));
+
+  console.log('step 77 :', guides);
+  const count = parseInt(
+    await Tour.countDocuments({ name: { $regex: new RegExp(`${name}`, 'i') } })
+  );
+
+  res.status(200).render('manageTours', {
+    title: 'Manage Tours',
+    tours,
+    count,
+    total_pages: Math.ceil(count / limit),
+    current_url_query: req.query,
+    url: req.url,
+    guides: guides
+  });
+});
+exports.getAdminDashboardUsers = catchAsync(async (req, res, next) => {
+  // Define the limit and page number for pagination
+  const limit = req.query.limit ? req.query.limit : 20;
+  const page = req.query.page ? req.query.page : 1;
+  const name = req.query.search ? req.query.search : ' ';
+  // Calculate the offset based on the page number and limit
+  const offset = (parseInt(page) - 1) * parseInt(limit);
+
+  // Find all bookings
+  const users = await User.find({
+    name: { $regex: new RegExp(`${name}`, 'i') }
+  })
+    .skip(offset)
+    .limit(parseInt(limit));
+
+  const count = parseInt(
+    await User.countDocuments({ name: { $regex: new RegExp(`${name}`, 'i') } })
+  );
+
+  // Find tours with the returned IDs
+  // const tourIDs = tours.map((el) => el.tour);
+  // const tours = await Tour.find({ _id: { $in: tourIDs } });
+  // console.log("tour :", tours);
+  if (!(req.query && req.query.page)) req.query.page = 1;
+  res.status(200).render('manageUsers', {
+    title: 'Manage Users',
+    users,
+    count,
+    total_pages: Math.ceil(count / limit),
+    current_url_query: req.query,
+    url: req.url
+  });
+});
+exports.getAdminDashboardBooking = catchAsync(async (req, res, next) => {
+  // Define the limit and page number for pagination
+  const limit = req.query.limit ? req.query.limit : 20;
+  const page = req.query.page ? req.query.page : 1;
+  const name = req.query.search ? req.query.search : ' ';
+  // Calculate the offset based on the page number and limit
+  const offset = (parseInt(page) - 1) * parseInt(limit);
+
+  // Find all bookings
+  const bookings = await Booking.find(/* { _id: { $in: ["664e13881f4bfd006b607644"] } } */)
+    .sort({ _id: -1 })
+    .skip(offset)
+    .limit(parseInt(limit));
+
+  console.log('bookings :', bookings);
+  const count = parseInt(await Booking.countDocuments({}));
+
+  // Find Booking with the returned IDs
+
+  if (!(req.query && req.query.page)) req.query.page = 1;
+  res.status(200).render('manageBookings', {
+    title: 'Manage Bookings',
+    bookings,
+    count,
+    total_pages: Math.ceil(count / limit),
+    current_url_query: req.query,
+    url: req.url
+  });
+});
+exports.getAdminDashboardReviews = catchAsync(async (req, res, next) => {
+  // Define the limit and page number for pagination
+  const limit = req.query.limit ? req.query.limit : 20;
+  const page = req.query.page ? req.query.page : 1;
+  const name = req.query.search ? req.query.search : ' ';
+  // Calculate the offset based on the page number and limit
+  const offset = (parseInt(page) - 1) * parseInt(limit);
+
+  // Find all bookings
+  const reviews = await Reviews.find(/* { _id: { $in: ["664e13881f4bfd006b607644"] } } */)
+    .sort({ _id: -1 })
+    .skip(offset)
+    .limit(parseInt(limit));
+
+  console.log('reviews :', reviews);
+  const count = parseInt(await Reviews.countDocuments({}));
+
+  // Find Booking with the returned IDs
+
+  if (!(req.query && req.query.page)) req.query.page = 1;
+  res.status(200).render('manageReviews', {
+    title: 'Manage Reviews',
+    reviews,
+    count,
+    total_pages: Math.ceil(count / limit),
+    current_url_query: req.query,
+    url: req.url
+  });
 });

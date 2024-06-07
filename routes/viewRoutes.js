@@ -9,11 +9,16 @@ const {
   getMyTours,
   getSignUp,
   getResetPassword,
-  getForgotPassword
+  getForgotPassword,
+  getAdminDashboardTours,
+  getAdminDashboardUsers,
+  getAdminDashboardBooking,
+  getAdminDashboardReviews
 } = require('../controllers/viewController');
 const {
   protect,
   isLoggedIn,
+  restrictTo,
   resetPassword
 } = require('../controllers/authController');
 
@@ -27,6 +32,33 @@ router.get('/forgotPassword', isLoggedIn, getForgotPassword);
 router.get('/resetPassword/:token', getResetPassword);
 router.get('/me', protect, getAccount);
 router.get('/my-tours', protect, getMyTours);
+
+// NOTE ADMIN AREA
+
+router.get(
+  '/manage-tours',
+  protect,
+  restrictTo('admin'),
+  getAdminDashboardTours
+);
+router.get(
+  '/manage-users',
+  protect,
+  restrictTo('admin'),
+  getAdminDashboardUsers
+);
+router.get(
+  '/manage-bookings',
+  protect,
+  restrictTo('admin'),
+  getAdminDashboardBooking
+);
+router.get(
+  '/manage-reviews',
+  protect,
+  restrictTo('admin'),
+  getAdminDashboardReviews
+);
 
 router.post('/submit-user-data', protect, updateUserData);
 

@@ -1,0 +1,146 @@
+extends base
+
+block content 
+
+  style(type="text/css").
+    html {
+     font-size: 16px;
+    }
+
+  main.main 
+    .container
+      
+      
+
+      .row  
+        .col
+          div#user-table.table-responsive
+            table.table.table-success
+              thead
+                tr
+                  th(scope='col') # 
+                  th(scope='col') Tour 
+                  th(scope='col') User
+                  th(scope='col') Paid
+                  th(scope='col') Created
+
+
+              tbody
+                each booking,index in bookings
+                  tr.align-middle
+                    td(scope="row")= index +1
+                    td.d-none(id=`id-${index}`,scope="row")= booking.id
+                    if booking.tour
+                      td(id=`tour-${index}`,scope="row")= booking.tour.name
+                    else  
+                      td
+                    if booking.user 
+                      td(id=`name-${index}`,scope="row")= booking.user.name
+                    else  
+                      td
+                    td(id=`paid-${index}`,scope="row")= booking.paid
+                    td(id=`created-${index}`,scope="row")= new Date(booking.createdAt).toLocaleString('en')
+                   
+
+      
+
+
+      nav(aria-label="Page navigation")
+      
+        - var page = 1;   
+        ul.pagination.pagination-lg.justify-content-center
+          if current_url_query.page == 1
+            li.page-item.disabled
+              a.page-link(href='/manage-bookings?page='+(current_url_query.page -1))
+                span(aria-hidden="true") &laquo;
+          else 
+            li.page-item
+              a.page-link(href='/manage-bookings?page='+(current_url_query.page -1))
+                span(aria-hidden="true") &laquo;
+           
+          while page <= total_pages
+            if current_url_query.page == page
+             li.page-item.active(aria-current="page") 
+                a.page-link(href='/manage-bookings?page='+(page ))= (page++)
+            else 
+              li.page-item(aria-current="page") 
+                a.page-link(href='/manage-bookings?page='+(page ))= (page++)
+
+          if parseInt(current_url_query.page) == total_pages    
+            li.page-item.disabled
+              a.page-link(href='/manage-bookings?page='+(parseInt(current_url_query.page) +1))
+                span(aria-hidden="true") &raquo;
+          else 
+            li.page-item
+              a.page-link(href='/manage-bookings?page='+(parseInt(current_url_query.page) +1))
+                span(aria-hidden="true") &raquo;
+
+
+    div.modal.fade(id="editBookingModal",  tabindex="-1",  role="dialog",  aria-hidden="true")
+      div.modal-dialog.modal-dialog-scrollable.modal-dialog-centered.modal-md(role="document")
+        div.modal-content
+          form(action="post",id="edit-user-form")
+            div.modal-header
+              h5.modal-title(id="modalTitleId") Edit User
+              button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
+            div.modal-body
+                
+                .form__group
+                  input#edit_id_manage_users(type='hidden',name='id')
+                  label.form__label(for='name') Name
+                  input#edit_name_manage_users.form__input(type='text', value=``, required, name='name')
+                .form__group.ma-bt-md
+                  label.form__label(for='email') Email address
+                  input#edit_email_manage_users.form__input(type='email', value=``, required, name='email')
+                .form__group.ma-bt-md
+                  label.form__label(for='password') Password
+                  input#edit_password_manage_users.form__input(type='password', value=``, name='password')
+                .form__group.ma-bt-md
+                  label.form__label(for='role') Role
+                  select#edit_role_manage_users.form-select( value=``, required, name='role')
+                    each role in ['admin','user','lead-guide','guide']
+                      option(value=role)= role
+                .form__group.form__photo-upload
+                  img.form__user-photo(src=`img/users/default.jpg`, alt='User photo')
+
+                  input.form__upload(type='file', accept='image/*' id='edit_photo', name='edit_photo')
+                  label(for='photo') Choose photo
+
+            div.modal-footer
+              button.btn.btn-secondary( data-bs-dismiss="modal") Close
+              button.btn.btn-primary(type="submit") Save
+
+
+    div.modal.fade(id="userModal",  tabindex="-1",  role="dialog",  aria-hidden="true")
+      div.modal-dialog.modal-dialog-scrollable.modal-dialog-centered.modal-md(role="document")
+        div.modal-content
+          form(action="post",id="add-user-form")
+            div.modal-header
+              h5.modal-title(id="modalTitleId") Add User
+              button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
+            div.modal-body
+          
+                .form__group
+                  label.form__label(for='name') Name
+                  input#name_manage_users.form__input(type='text', value=``, required, name='name')
+                .form__group.ma-bt-md
+                  label.form__label(for='email') Email address
+                  input#email_manage_users.form__input(type='email', value=``, required, name='email')
+                .form__group.ma-bt-md
+                  label.form__label(for='password') Password
+                  input#password_manage_users.form__input(type='password', value=``, required, name='password')
+                .form__group.ma-bt-md
+                  label.form__label(for='role') Password
+                  select#role_manage_users.form-select( value=``, required, name='role')
+                    each role in ['admin','user','lead-guide','guide']
+                      option(value=role)= role
+                .form__group.form__photo-upload
+                  img.form__user-photo(src=`img/users/default.jpg`, alt='User photo')
+
+                  input.form__upload(type='file', accept='image/*' id='photo', name='photo')
+                  label(for='photo') Choose new photo
+
+            div.modal-footer
+              button.btn.btn-secondary( data-bs-dismiss="modal") Close
+              button.btn.btn-primary(type="submit",) Save
+
