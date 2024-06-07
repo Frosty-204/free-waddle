@@ -143,7 +143,7 @@ block content
                   label.form__label(for='password') Password
                   input#password_manage_users.form__input(type='password', value=``, required, name='password')
                 .form__group.ma-bt-md
-                  label.form__label(for='role') Password
+                  label.form__label(for='role') Role
                   select#role_manage_users.form-select( value=``, required, name='role')
                     each role in ['admin','user','lead-guide','guide']
                       option(value=role)= role
