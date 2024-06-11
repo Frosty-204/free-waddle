@@ -12375,7 +12375,11 @@ var login = exports.login = /*#__PURE__*/function () {
           if (res.data.status === 'success') {
             (0, _alerts.showAlert)('success', 'Logged in successfully');
             window.setTimeout(function () {
-              location.reload(true);
+              // location.reload(true)
+              // location.assign('/')
+              // This should fix the redirection issue   
+              var previousUrl = document.referrer || '/';
+              location.assign(previousUrl);
             }, 500);
           }
           console.log(res);
@@ -12411,7 +12415,7 @@ var logout = exports.logout = /*#__PURE__*/function () {
           res = _context2.sent;
           if (res.data.status === 'success') {
             // reload from the server not from browser
-            location.reload(true);
+            location.assign('/');
           }
           _context2.next = 10;
           break;

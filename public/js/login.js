@@ -17,7 +17,11 @@ export const login = async (email, password) => {
      if (res.data.status === 'success'){
        showAlert('success', 'Logged in successfully');
        window.setTimeout(() =>{
-         location.reload(true)
+         // location.reload(true)
+         // location.assign('/')
+      // This should fix the redirection issue   
+      const previousUrl = document.referrer || '/';
+      location.assign(previousUrl);
        }, 500);
      }
     console.log(res);
@@ -36,7 +40,7 @@ export const logout =  async () =>{
     });
     if (res.data.status === 'success'){
       // reload from the server not from browser
-      location.reload(true);
+      location.assign('/')
     }
   }
   catch(err){
